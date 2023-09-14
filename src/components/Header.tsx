@@ -6,27 +6,65 @@ import { genresActions, moviesActions } from "../redux/slices";
 import { GenreBadge } from "./GenreBadge";
 
 
-const Header:React.FC = () => {
+const Header: React.FC = () =>
+{
   const { genres, activeBtn } = useAppSelector((state: RootState) => state.genres);
-  const { template, showMenu } = useAppSelector((state: RootState) => state.movies);
+  const { showMenu, template } = useAppSelector((state: RootState) => state.movies);
   const dispatch = useAppDispatch();
   const [userBlock, setUserBlock] = useState(false);
   const user = { name: "Svitlana", role: "admin", skills: ["htmls", "css", "js"] };
 
-  useEffect(() => {
+
+  useEffect(() =>
+  {
     dispatch(genresActions.getGenres());
   }, []);
 
-  useEffect(() => {
-    dispatch(moviesActions.setTemplate())
+  // привязка localStorage до template
+  useEffect(() =>
+  {
+    if (localStorage.getItem('template') === undefined)
+    {
+      localStorage.setItem('template', 'black');
+      dispatch(moviesActions.setTemplate(true));
+    } if (localStorage.getItem('template') === 'black')
+    {
+      localStorage.setItem('template', 'white');
+      dispatch(moviesActions.setTemplate(false));
+    } else
+    {
+      localStorage.setItem('template', 'black');
+      dispatch(moviesActions.setTemplate(true));
+    }
   }, []);
 
-  useEffect(() => {
+  //відобрження userBlock 
+  useEffect(() =>
+  {
 
   }, [userBlock, setUserBlock]);
 
 
-  const resetAll = () => {
+  // зміна template
+  const changeTemplate = () =>
+  {
+    if (localStorage.getItem('template') === 'black')
+    {
+      localStorage.setItem('template', 'white');
+      dispatch(moviesActions.setTemplate(false));
+    } else
+    {
+      localStorage.setItem('template', 'black');
+      dispatch(moviesActions.setTemplate(true));
+    }
+  };
+
+
+
+
+
+  const resetAll = () =>
+  {
     dispatch(genresActions.setActiveGenre(null));
     dispatch(genresActions.setActiveBtn('all'));
     dispatch(moviesActions.setPage(1));
@@ -35,16 +73,18 @@ const Header:React.FC = () => {
   };
 
 
-  const onAll = () => {
+  const onAll = () =>
+  {
     dispatch(genresActions.setActiveGenre(null));
     dispatch(genresActions.setActiveBtn('all'));
-  }
+  };
 
-  const onGenres = () => {
+  const onGenres = () =>
+  {
     dispatch(moviesActions.setSearchValue(null));
     dispatch(moviesActions.setShowMenu(!showMenu));
     dispatch(moviesActions.setPage(1));
-  }
+  };
 
 
 
@@ -77,7 +117,7 @@ const Header:React.FC = () => {
       )}
 
       <button
-        onClick={() => dispatch(moviesActions.setTemplate())}
+        onClick={() => changeTemplate()}
         className={template ? 'menu-button btn-white' : 'menu-button btn-dark'}
         title="Change Theme">{template ? 'Theme: White' : 'Theme: Dark'}
       </button>
@@ -95,7 +135,7 @@ const Header:React.FC = () => {
       </div>}
 
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

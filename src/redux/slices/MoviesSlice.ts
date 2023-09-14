@@ -86,9 +86,9 @@ export const MoviesSlice = createSlice({
     {
       state.page = action.payload;
     },
-    setTemplate: (state) =>
+    setTemplate: (state, action) =>
     {
-      state.template = !state.template;
+      state.template = action.payload;
     },
     setSearchValue: (state, action) =>
     {

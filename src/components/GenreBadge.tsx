@@ -21,7 +21,7 @@ const GenreBadge: React.FC<IGenreBadge> = ({ genre, key, activeBtn }:IGenreBadge
 
 
   return (
-    <Link onClick={onActive} to={`/`} className={activeBtn === genre.name ? 'red' : 'genre'}>
+    <Link onClick={onActive} to={`/`} className={activeBtn === genre.name ? 'genre red' : 'genre'}>
       {genre.name}
     </Link>
   )
