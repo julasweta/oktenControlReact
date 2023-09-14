@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { MovieInfo } from '../components';
-import { useAppDispatch } from '../hooks/hooks';
-import { movieService } from '../services/MovieServices';
-import { moviesActions } from '../redux/slices';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { MovieInfo } from "../components";
+import { useAppDispatch } from "../hooks/hooks";
+import { moviesActions } from "../redux/slices";
+import { movieService } from "../services/MovieServices";
 
-type Props = {}
+type Props = {};
 
 const MoviePage = (props: Props) => {
-  const [movie, setMovie] = useState(null); 
+  const [movie, setMovie] = useState(null);
   const dispatch = useAppDispatch();
-
-
 
   const params = useParams();
 
   useEffect(() => {
-    dispatch(moviesActions.setShowMenu(false))
+    dispatch(moviesActions.setShowMenu(false));
     const fetchMovie = async () => {
       try {
         const response = await movieService.getOneMovie(+params.id);
@@ -34,10 +32,10 @@ const MoviePage = (props: Props) => {
   }
 
   return (
-    <div className='container'>
-    <MovieInfo movie={movie} />
-  </div>
-  )
-}
+    <div className="container">
+      <MovieInfo movie={movie} />
+    </div>
+  );
+};
 
-export {MoviePage}
+export { MoviePage };

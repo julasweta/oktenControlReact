@@ -1,16 +1,15 @@
-import React, { useEffect, useMemo } from 'react';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { RootState } from '../../redux/store';
-import { ISearchquery } from '../../interfaces';
-import { SearshForm } from '../SearshForm';
-import { moviesActions } from '../../redux/slices';
-import { MoviesListCard } from './MoviesListCard';
+import React, { useEffect, useMemo } from "react";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { ISearchquery } from "../../interfaces";
+import { moviesActions } from "../../redux/slices";
+import { RootState } from "../../redux/store";
+import { SearshForm } from "../SearshForm";
+import { MoviesListCard } from "./MoviesListCard";
 
-const MoviesList: React.FC = () =>
-{
+const MoviesList: React.FC = () => {
   const { movies, page, searchValue } = useAppSelector(
-    (state: RootState) => state.movies
+    (state: RootState) => state.movies,
   );
   const { activeGenre } = useAppSelector((state: RootState) => state.genres);
   const dispatch = useAppDispatch();
@@ -18,26 +17,26 @@ const MoviesList: React.FC = () =>
   const params: ISearchquery = useMemo(
     () => ({
       query: searchValue,
-      include_adult: 'true',
+      include_adult: "true",
       page: page,
     }),
-    [searchValue, page]
+    [searchValue, page],
   );
 
-  useEffect(() =>
-  {
-    if (searchValue === null || searchValue === '' || searchValue === undefined)
-    {
+  useEffect(() => {
+    if (
+      searchValue === null ||
+      searchValue === "" ||
+      searchValue === undefined
+    ) {
       dispatch(moviesActions.getMovies({ page: page, gener: activeGenre }));
-    } else
-    {
+    } else {
       dispatch(moviesActions.getSearchMovies({ params: params }));
     }
   }, [dispatch, page, activeGenre, searchValue, params]);
 
   //перевріяємо чи номер сторінки більше 1
-  const pageRequr = (page: number): boolean =>
-  {
+  const pageRequr = (page: number): boolean => {
     return page > 1;
   };
 
@@ -45,10 +44,12 @@ const MoviesList: React.FC = () =>
     <>
       <div className="pages">
         <button
-          onClick={() => pageRequr(page) && dispatch(moviesActions.setPage(page - 1))}
+          onClick={() =>
+            pageRequr(page) && dispatch(moviesActions.setPage(page - 1))
+          }
           className="menu-button page_btn"
         >
-          {' <<< '} Prev page
+          {" <<< "} Prev page
           <p>{page - 1}</p>
         </button>
         <button className="menu-button page_btn">Page: {page}</button>
@@ -56,7 +57,7 @@ const MoviesList: React.FC = () =>
           onClick={() => dispatch(moviesActions.setPage(page + 1))}
           className="menu-button page_btn"
         >
-          {page + 1} <p> Next page {' >>> '}</p>
+          {page + 1} <p> Next page {" >>> "}</p>
         </button>
       </div>
 

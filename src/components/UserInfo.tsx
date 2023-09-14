@@ -1,8 +1,11 @@
-import React from 'react'
+import React from "react";
 
-
-const UserInfo:React.FC = () => {
-  const user = { name: "Svitlana", role: "admin", skills: ["htmls", "css", "js"] };
+const UserInfo: React.FC = () => {
+  const user = {
+    name: "Svitlana",
+    role: "admin",
+    skills: ["htmls", "css", "js"],
+  };
 
   return (
     <div className="user">
@@ -12,13 +15,13 @@ const UserInfo:React.FC = () => {
       <div>
         <h4>SKILLS</h4>
         <ol>
-          {user.skills.map((item:string) => (
+          {user.skills.map((item: string) => (
             <li>{item}</li>
           ))}
         </ol>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export { UserInfo }
+export { UserInfo };

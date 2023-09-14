@@ -1,8 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 import { useAppDispatch } from "../hooks/hooks";
-import { genresActions } from '../redux/slices/GenresSlice';
-import { Genre } from '../interfaces';
+import { Genre } from "../interfaces";
+import { genresActions } from "../redux/slices/GenresSlice";
 
 interface IGenreBadge {
   genre: Genre;
@@ -10,21 +10,28 @@ interface IGenreBadge {
   activeBtn: string;
 }
 
-const GenreBadge: React.FC<IGenreBadge> = ({ genre, key, activeBtn }:IGenreBadge) => {
-
+const GenreBadge: React.FC<IGenreBadge> = ({
+  genre,
+  key,
+  activeBtn,
+}: IGenreBadge) => {
   const dispatch = useAppDispatch();
 
-  const onActive = ():void => {
+  // Обробник кліку на жанр
+  const onActive = (): void => {
     dispatch(genresActions.setActiveGenre(genre.id));
     dispatch(genresActions.setActiveBtn(genre.name));
-  }
-
+  };
 
   return (
-    <Link onClick={onActive} to={`/`} className={activeBtn === genre.name ? 'genre red' : 'genre'}>
+    <Link
+      onClick={onActive}
+      to={`/`}
+      className={activeBtn === genre.name ? "genre red" : "genre"}
+    >
       {genre.name}
     </Link>
-  )
-}
+  );
+};
 
-export { GenreBadge }
+export { GenreBadge };

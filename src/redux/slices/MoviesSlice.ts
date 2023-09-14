@@ -1,15 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { AxiosError } from 'axios';
-import { movieService } from '../../services/MovieServices';
+import { AxiosError } from "axios";
+import { movieService } from "../../services/MovieServices";
 import { IIMAGE, IMovie, ISearchquery } from "../../interfaces";
 
-interface MoviesState
-{
+interface MoviesState {
   movies: IMovie[];
   page: number;
   template: boolean;
   searchValue: string | null;
-  images: IIMAGE[],
+  images: IIMAGE[];
   showMenu: boolean;
 }
 
@@ -24,94 +23,76 @@ const initialState: MoviesState = {
 
 /*-----------------AsyncThunk -------------------------------  */
 //отримання всіх відео
-const getMovies = createAsyncThunk<IMovie[], { page: number, gener: number; }>(
-  'moviesSlice/getMovies',
-  async ({ page, gener }, { rejectWithValue, dispatch }) =>
-  {
-    try
-    {
+const getMovies = createAsyncThunk<IMovie[], { page: number; gener: number }>(
+  "moviesSlice/getMovies",
+  async ({ page, gener }, { rejectWithValue, dispatch }) => {
+    try {
       const { data } = await movieService.getMovies(page, gener);
       return data.results;
-    } catch (e)
-    {
+    } catch (e) {
       const err = e as AxiosError;
       return rejectWithValue(err);
     }
-  }
+  },
 );
 
 //отримання відео з пошуку
-const getSearchMovies = createAsyncThunk<IMovie[], { params: ISearchquery; }>(
-  'moviesSlice/getSearchMovies',
-  async ({ params }, { rejectWithValue }) =>
-  {
-    try
-    {
+const getSearchMovies = createAsyncThunk<IMovie[], { params: ISearchquery }>(
+  "moviesSlice/getSearchMovies",
+  async ({ params }, { rejectWithValue }) => {
+    try {
       const { data } = await movieService.searchMovie(params);
       return data.results;
-    } catch (e)
-    {
+    } catch (e) {
       const err = e as AxiosError;
       return rejectWithValue(err);
     }
-  }
+  },
 );
 
 // отримання фото з вибраного фільму
-const getPoster = createAsyncThunk<any, { id: number; }>(
-  'moviesSlice/getPoster',
-  async ({ id }, { rejectWithValue }) =>
-  {
-    try
-    {
+const getPoster = createAsyncThunk<any, { id: number }>(
+  "moviesSlice/getPoster",
+  async ({ id }, { rejectWithValue }) => {
+    try {
       const { data } = await movieService.getPoster(id);
       return data.posters;
-    } catch (e)
-    {
+    } catch (e) {
       const err = e as AxiosError;
       return rejectWithValue(err);
     }
-  }
+  },
 );
-
-
 
 /*--------------------- SLICE--------------------  */
 
 export const MoviesSlice = createSlice({
-  name: 'moviesSlice',
+  name: "moviesSlice",
   initialState,
   reducers: {
-    setPage: (state, action) =>
-    {
+    setPage: (state, action) => {
       state.page = action.payload;
     },
-    setTemplate: (state, action) =>
-    {
+    setTemplate: (state, action) => {
       state.template = action.payload;
     },
-    setSearchValue: (state, action) =>
-    {
+    setSearchValue: (state, action) => {
       state.searchValue = action.payload;
     },
-    setShowMenu: (state, action) =>
-    {
+    setShowMenu: (state, action) => {
       state.showMenu = action.payload;
     },
-
   },
 
   extraReducers: (builder) =>
-    builder.addCase(getMovies.fulfilled, (state, action) =>
-    {
-      state.movies = action.payload;
-    })
-      .addCase(getSearchMovies.fulfilled, (state, action) =>
-      {
+    builder
+      .addCase(getMovies.fulfilled, (state, action) => {
         state.movies = action.payload;
       })
-      .addCase(getPoster.fulfilled, (state, action) =>
-      {
+      .addCase(getSearchMovies.fulfilled, (state, action) => {
+        state.movies = action.payload;
+      })
+      .addCase(getPoster.fulfilled, (state, action) => {
         state.images = action.payload;
       }),
 });
@@ -122,8 +103,7 @@ const moviesActions = {
   ...actions,
   getMovies,
   getSearchMovies,
-  getPoster
+  getPoster,
 };
 
 export { moviesActions, moviesReducer };
-

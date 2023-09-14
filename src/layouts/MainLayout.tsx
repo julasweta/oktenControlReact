@@ -1,15 +1,14 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Outlet } from "react-router-dom";
-import Header from "../components/Header";
 import { Footer } from "../components";
+import Header from "../components/Header";
 
-const MainLayout:FC = () => {
-
+const MainLayout: FC = () => {
   return (
     <>
       <Header />
       <Outlet />
-      <Footer/>
+      <Footer />
     </>
   );
 };
